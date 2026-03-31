@@ -1,3 +1,6 @@
+# Documentação interna (não deve subir ao repositório público)
+docs/
+
 # Dependências geradas automaticamente pelo Docker no primeiro start
 backend/framework/
 backend/vendor/

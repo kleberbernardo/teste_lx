@@ -126,7 +126,24 @@ class PlaylistController extends ApiController
             ->order('pt.position ASC, pt.added_at ASC')
             ->queryAll();
 
-        $this->sendJson($rows);
+        // Agrupa por artista para processar cada faixa do artista em sequência
+        $byArtist = array();
+        foreach ($rows as $row) {
+            $byArtist[$row['artist']][] = $row;
+        }
+
+        // Para cada artista, formata a duração de cada faixa
+        $result = array();
+        foreach ($byArtist as $artist => $tracks) {
+            foreach ($tracks as $track) {
+                $s = (int) $track['duration_s'];
+                $track['duration_formatted'] = floor($s / 60)
+                    . ':' . sprintf('%02d', $s % 60);
+            }
+            $result = array_merge($result, $tracks);
+        }
+
+        $this->sendJson($result);
     }
 
     /**
@@ -150,12 +167,21 @@ class PlaylistController extends ApiController
         }
 
         // Verifica se já existe na playlist
-        $existing = PlaylistTrack::model()->findByAttributes(array(
-            'playlist_id' => (int) $playlist->id,
-            'track_id'    => $trackId,
-        ));
+        $existingTracks = Yii::app()->db->createCommand()
+            ->select('track_id')
+            ->from('playlist_tracks')
+            ->where('playlist_id = :pid', array(':pid' => (int) $playlist->id))
+            ->queryAll();
 
-        if ($existing !== null) {
+        $alreadyAdded = false;
+        foreach ($existingTracks as $item) {
+            if (isset($item['track_id'])) {
+                $alreadyAdded = true;
+                break;
+            }
+        }
+
+        if ($alreadyAdded) {
             $this->sendError('Esta track já está na playlist', 422);
         }
 
