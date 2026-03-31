@@ -1,0 +1,3 @@
+# Força LF em arquivos que rodam no Linux/container
+*.sh    text eol=lf
+*.sql   text eol=lf
