@@ -1,0 +1,107 @@
+<div class="page-content">
+
+    <!-- Loading -->
+    <div class="loading-wrapper" ng-if="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Erro -->
+    <div class="container-fluid" ng-if="error && !loading">
+        <div class="alert alert-danger">{{ error }}</div>
+    </div>
+
+    <div ng-if="!loading && playlist">
+
+        <!-- Header da playlist -->
+        <div class="playlist-header">
+            <div class="container-fluid">
+                <div style="display:flex; align-items:flex-end;">
+
+                    <!-- Capa -->
+                    <div
+                        class="playlist-header-cover"
+                        style="background-color: {{ playlist.cover_color }}">
+                        <span class="cover-icon-lg">&#9835;</span>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="playlist-header-info">
+                        <div class="playlist-type">Playlist</div>
+                        <h1>{{ playlist.name }}</h1>
+                        <p class="meta" ng-if="playlist.description">{{ playlist.description }}</p>
+                        <p class="meta">
+                            {{ playlist.track_count }} música{{ playlist.track_count !== 1 ? 's' : '' }}
+                        </p>
+                        <div class="mt-sm">
+                            <button class="btn btn-outline-light btn-sm" ng-click="openEditModal()">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" ng-click="deletePlaylist()" style="margin-left:8px;">
+                                Remover
+                            </button>
+                            <button class="btn btn-outline-light btn-sm" ng-click="goBack()" style="margin-left:8px;">
+                                &larr; Voltar
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Tracks -->
+        <div class="container-fluid">
+
+            <div class="row" style="margin-bottom: 16px;">
+                <div class="col-xs-12">
+                    <button class="btn btn-spotify btn-sm" ng-click="openAddTrackModal()">
+                        + Adicionar música
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista de tracks -->
+            <div ng-if="tracks.length > 0">
+                <table class="tracks-table">
+                    <thead>
+                        <tr>
+                            <th style="width:40px;">#</th>
+                            <th>Título</th>
+                            <th>Artista</th>
+                            <th>Álbum</th>
+                            <th style="width:70px; text-align:right;">&#128336;</th>
+                            <th style="width:40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="track in tracks">
+                            <td>{{ $index + 1 }}</td>
+                            <td class="track-title">{{ track.title }}</td>
+                            <td>{{ track.artist }}</td>
+                            <td>{{ track.album }}</td>
+                            <td class="track-duration">
+                                {{ formatDuration(track.duration_s) }}
+                            </td>
+                            <td>
+                                <button
+                                    class="btn btn-xs btn-danger"
+                                    title="Remover da playlist"
+                                    ng-click="removeTrack(track)">
+                                    &times;
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty state -->
+            <div class="empty-state" ng-if="tracks.length === 0">
+                <div class="empty-icon">&#127925;</div>
+                <h4>Nenhuma música ainda</h4>
+                <p>Adicione músicas para começar a ouvir</p>
+            </div>
+
+        </div>
+    </div>
+</div>

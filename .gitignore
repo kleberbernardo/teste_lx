@@ -1,0 +1,11 @@
+# Dependências geradas automaticamente pelo Docker no primeiro start
+backend/framework/
+backend/vendor/
+backend/protected/runtime/
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

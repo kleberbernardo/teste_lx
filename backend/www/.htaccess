@@ -1,0 +1,11 @@
+Options +FollowSymLinks
+IndexIgnore */*
+
+RewriteEngine On
+
+# Não reescreve arquivos e diretórios reais
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Tudo passa pelo front controller
+RewriteRule . index.php [L]

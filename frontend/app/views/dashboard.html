@@ -1,0 +1,76 @@
+<div class="page-content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="section-title">
+                    Suas Playlists
+                    <button class="btn btn-spotify btn-sm pull-right" ng-click="openCreateModal()">
+                        + Nova Playlist
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading-wrapper" ng-if="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Erro -->
+        <div class="alert alert-danger" ng-if="error && !loading">
+            {{ error }}
+        </div>
+
+        <!-- Grid de playlists -->
+        <div class="playlists-grid" ng-if="!loading">
+
+            <!-- Card de cada playlist -->
+            <div
+                class="playlist-card"
+                ng-repeat="playlist in playlists"
+                ng-click="openPlaylist(playlist.id)">
+
+                <!-- Capa colorida -->
+                <div class="playlist-cover">
+                    <div
+                        class="playlist-cover-inner"
+                        style="background-color: {{ playlist.cover_color }}">
+                        <span class="cover-icon">&#9835;</span>
+                    </div>
+                </div>
+
+                <h4 title="{{ playlist.name }}">{{ playlist.name }}</h4>
+                <p>{{ playlist.track_count }} música{{ playlist.track_count !== 1 ? 's' : '' }}</p>
+
+                <!-- Ações (aparecem no hover via CSS) -->
+                <div class="card-actions">
+                    <button
+                        class="btn btn-xs btn-outline-light"
+                        title="Editar"
+                        ng-click="openEditModal($event, playlist)">
+                        &#9998;
+                    </button>
+                    <button
+                        class="btn btn-xs btn-danger"
+                        title="Remover"
+                        ng-click="deletePlaylist($event, playlist)">
+                        &times;
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-state" ng-if="!loading && playlists.length === 0">
+            <div class="empty-icon">&#9835;</div>
+            <h4>Nenhuma playlist ainda</h4>
+            <p>Crie sua primeira playlist para começar</p>
+            <button class="btn btn-spotify mt-md" ng-click="openCreateModal()">
+                Criar playlist
+            </button>
+        </div>
+
+    </div>
+</div>

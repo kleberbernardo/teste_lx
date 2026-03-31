@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR" ng-app="playlistApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlaylistApp</title>
+
+    <!-- Bootstrap 3.4.1 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+
+    <!-- Google Fonts: Righteous (heading/brand) + Poppins (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Righteous&display=swap" rel="stylesheet">
+
+    <!-- Tema customizado Spotify-like -->
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+
+    <!-- Navbar — só aparece quando logado -->
+    <nav class="navbar navbar-default navbar-fixed-top app-navbar" ng-if="currentUser">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <!-- Hamburguer: ng-click controla navOpen (sem Bootstrap JS) -->
+                <button type="button" class="navbar-toggle" ng-click="navOpen = !navOpen">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/">
+                    <span class="brand-icon">&#9835;</span> PlaylistApp
+                </a>
+            </div>
+            <!-- ng-class substitui data-toggle="collapse" -->
+            <div class="navbar-collapse" ng-class="{'in': navOpen}" ng-click="navOpen = false">
+                <ul class="nav navbar-nav">
+                    <li ng-class="{active: isActive('/')}">
+                        <a href="#/">Playlists</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- uib-dropdown substitui data-toggle="dropdown" -->
+                    <li uib-dropdown>
+                        <a href="#" uib-dropdown-toggle ng-click="$event.preventDefault()">
+                            {{ currentUser.name }} <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                            <li><a href="#/settings">Configurações</a></li>
+                            <li class="divider"></li>
+                            <li><a href ng-click="logout()">Sair</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Outlet das rotas Angular -->
+    <div ng-view></div>
+
+    <!-- AngularJS 1.8.3 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-route.min.js"></script>
+
+    <!-- ui-bootstrap 2.5.0 — componentes Bootstrap como diretivas Angular (sem jQuery) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- App -->
+    <script src="app/app.js"></script>
+    <script src="app/routes.js"></script>
+
+    <!-- Services -->
+    <script src="app/services/AuthService.js"></script>
+    <script src="app/services/PlaylistService.js"></script>
+    <script src="app/services/TrackService.js"></script>
+    <script src="app/services/UserService.js"></script>
+
+    <!-- Controllers -->
+    <script src="app/controllers/LoginCtrl.js"></script>
+    <script src="app/controllers/DashboardCtrl.js"></script>
+    <script src="app/controllers/PlaylistCtrl.js"></script>
+    <script src="app/controllers/SettingsCtrl.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+    "name": "teste-lx/playlist-api",
+    "description": "API de playlists — teste de contratação full stack",
+    "require": {
+        "firebase/php-jwt": "^4.0"
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    }
+}

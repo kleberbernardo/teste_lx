@@ -1,0 +1,92 @@
+<div class="page-content">
+    <div class="container" style="max-width: 600px;">
+
+        <h2 class="section-title">Configurações</h2>
+
+        <!-- Painel: Informações do Perfil -->
+        <div class="settings-panel">
+            <h3>Informações do Perfil</h3>
+
+            <div class="alert alert-success" ng-if="profileMsg">{{ profileMsg }}</div>
+            <div class="alert alert-danger"  ng-if="profileError">{{ profileError }}</div>
+
+            <form ng-submit="saveProfile()" novalidate>
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        ng-model="profile.name"
+                        placeholder="Seu nome"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input
+                        type="email"
+                        class="form-control"
+                        ng-model="profile.email"
+                        placeholder="seu@email.com"
+                        required>
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-spotify"
+                    ng-disabled="loadingProfile">
+                    {{ loadingProfile ? 'Salvando...' : 'Salvar perfil' }}
+                </button>
+            </form>
+        </div>
+
+        <!-- Painel: Alterar Senha -->
+        <div class="settings-panel">
+            <h3>Alterar Senha</h3>
+
+            <div class="alert alert-success" ng-if="passwordMsg">{{ passwordMsg }}</div>
+            <div class="alert alert-danger"  ng-if="passwordError">{{ passwordError }}</div>
+
+            <form ng-submit="changePassword()" novalidate>
+                <div class="form-group">
+                    <label>Senha atual</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        ng-model="passwordForm.current_password"
+                        placeholder="••••••••"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nova senha</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        ng-model="passwordForm.new_password"
+                        placeholder="Mínimo 6 caracteres"
+                        minlength="6"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar nova senha</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        ng-model="passwordForm.confirm_password"
+                        placeholder="Repita a nova senha"
+                        required>
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-spotify"
+                    ng-disabled="loadingPassword">
+                    {{ loadingPassword ? 'Alterando...' : 'Alterar senha' }}
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>

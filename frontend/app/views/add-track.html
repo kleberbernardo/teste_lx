@@ -1,0 +1,69 @@
+<!-- Modal: Adicionar Track -->
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()">&times;</button>
+    <h4 class="modal-title">Adicionar Música</h4>
+</div>
+
+<div class="modal-body" style="padding-top:0;">
+
+    <div class="input-group" style="margin:16px 0;">
+        <input
+            type="text"
+            class="form-control"
+            ng-model="query"
+            placeholder="Buscar por título, artista ou álbum..."
+            ng-keyup="$event.keyCode === 13 && search()">
+        <span class="input-group-btn">
+            <button class="btn btn-spotify" ng-click="search()">Buscar</button>
+        </span>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-wrapper" ng-if="loading" style="min-height:80px;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Resultados -->
+    <div ng-if="!loading && tracks.length > 0" style="max-height:350px; overflow-y:auto;">
+        <table class="tracks-table" style="width:100%;">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Artista</th>
+                    <th style="width:60px; text-align:right;">Dur.</th>
+                    <th style="width:50px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="track in tracks" ng-class="{'text-muted': track.alreadyAdded}">
+                    <td class="track-title" style="opacity: {{ track.alreadyAdded ? 0.5 : 1 }}">
+                        {{ track.title }}
+                    </td>
+                    <td style="opacity: {{ track.alreadyAdded ? 0.5 : 1 }}">{{ track.artist }}</td>
+                    <td class="track-duration" style="opacity: {{ track.alreadyAdded ? 0.5 : 1 }}">
+                        {{ formatDuration(track.duration_s) }}
+                    </td>
+                    <td>
+                        <button
+                            class="btn btn-xs btn-spotify"
+                            ng-click="select(track)"
+                            ng-disabled="track.alreadyAdded"
+                            title="{{ track.alreadyAdded ? 'Já na playlist' : 'Adicionar' }}">
+                            {{ track.alreadyAdded ? '✓' : '+' }}
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sem resultados -->
+    <div class="empty-state" ng-if="!loading && tracks.length === 0 && searched">
+        <p>Nenhuma música encontrada para "{{ query }}"</p>
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">Fechar</button>
+</div>

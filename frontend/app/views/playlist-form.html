@@ -1,0 +1,56 @@
+<!-- Modal: Criar / Editar Playlist -->
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()">&times;</button>
+    <h4 class="modal-title">{{ isEdit ? 'Editar Playlist' : 'Nova Playlist' }}</h4>
+</div>
+
+<div class="modal-body">
+    <form name="playlistForm" novalidate>
+
+        <div class="form-group">
+            <label>Nome da playlist *</label>
+            <input
+                type="text"
+                class="form-control"
+                ng-model="form.name"
+                placeholder="Minha playlist"
+                maxlength="200"
+                required
+                autofocus>
+        </div>
+
+        <div class="form-group">
+            <label>Descrição</label>
+            <textarea
+                class="form-control"
+                ng-model="form.description"
+                rows="2"
+                placeholder="Descrição opcional..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Cor da capa</label>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
+                <div
+                    ng-repeat="color in colors"
+                    ng-click="selectColor(color)"
+                    style="width:32px; height:32px; border-radius:4px; cursor:pointer;
+                           background-color: {{ color }};
+                           border: 3px solid {{ form.cover_color === color ? '#fff' : 'transparent' }};
+                           transition: border 0.1s;">
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">Cancelar</button>
+    <button
+        class="btn btn-spotify"
+        ng-click="submit()"
+        ng-disabled="!form.name">
+        {{ isEdit ? 'Salvar' : 'Criar' }}
+    </button>
+</div>

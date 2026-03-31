@@ -1,0 +1,10 @@
+Options +FollowSymLinks
+
+RewriteEngine On
+
+# Não reescreve arquivos e diretórios reais
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# SPA fallback — tudo vai para index.html
+RewriteRule ^ index.html [L]

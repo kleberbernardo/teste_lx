@@ -1,0 +1,71 @@
+services:
+
+  # -----------------------------------------------------------------
+  # API — PHP 5.6 + Apache
+  # Acesse: http://localhost:8080
+  # -----------------------------------------------------------------
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: playlist_api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html/backend
+    environment:
+      DB_HOST: db
+      DB_NAME: playlist_db
+      DB_USER: playlist
+      DB_PASS: playlist123
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - playlist_net
+
+  # -----------------------------------------------------------------
+  # Frontend — Nginx servindo a SPA estática
+  # Acesse: http://localhost:3001
+  # -----------------------------------------------------------------
+  frontend:
+    image: nginx:1.25-alpine
+    container_name: playlist_frontend
+    ports:
+      - "3001:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./docker/nginx-frontend.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - playlist_net
+
+  # -----------------------------------------------------------------
+  # Banco de dados — MySQL 5.7
+  # -----------------------------------------------------------------
+  db:
+    image: mysql:5.7
+    container_name: playlist_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: playlist_db
+      MYSQL_USER: playlist
+      MYSQL_PASSWORD: playlist123
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - playlist_net
+
+networks:
+  playlist_net:
+    driver: bridge
+
+volumes:
+  db_data:
